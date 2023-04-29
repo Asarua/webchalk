@@ -1,5 +1,5 @@
 {
-  "name": "webchalk",
+  "name": "@asarua/webchalk",
   "version": "0.0.1",
   "description": "A library for outputting colored fonts in browser developer tools",
   "main": "./dist/index.mjs",

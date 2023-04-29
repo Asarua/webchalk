@@ -1,11 +1,11 @@
-# webchalk
+# @asarua/webchalk
 
 A library for outputting colored fonts in browser developer tools
 
 ## Usage
 
 ```typescript
-import { chalk } from 'webchalk'
+import { chalk } from '@asarua/webchalk'
 
 
 // colored font
