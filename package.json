@@ -16,7 +16,11 @@
     "build": "npx tsup src/index.ts --format esm,cjs --dts",
     "publish": "npm run build && npm publish --access=public"
   },
-  "keywords": [],
+  "keywords": [
+    "chalk",
+    "colored",
+    "browser"
+  ],
   "author": "asarua",
   "license": "MIT",
   "devDependencies": {
