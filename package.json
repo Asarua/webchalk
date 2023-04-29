@@ -1,20 +1,33 @@
 {
   "name": "webchalk",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "A library for outputting colored fonts in browser developer tools",
+  "main": "./dist/index.mjs",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "test": "npx ts-node ./__tests__/index.ts",
-    "build": "npx tsup src/index.ts --format esm,cjs,iife --dts"
+    "build": "npx tsup src/index.ts --format esm,cjs --dts",
+    "publish": "npm run build && npm publish --access=public"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "asarua",
+  "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "@types/node": "^18.16.3",
-    "changeset": "^0.2.6",
     "ts-node": "^10.9.1",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
-  }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }

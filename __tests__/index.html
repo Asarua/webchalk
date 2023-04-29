@@ -12,8 +12,9 @@
 </html>
 <script type="module">
   import { chalk } from '../dist/index.mjs'
-  const bgBlack = chalk.bg('black')
+  const bgyuyu = chalk.bg('#555fff')
   const colorWhite = chalk.color('white')
+  const colorhuahua = chalk.color('#abcdef')
   const { red, bgGreen } = chalk
-  chalk`123${red(bgGreen(456))}789${bgBlack(colorWhite(0))} 555`
+  chalk`123${red(bgGreen(456))}789${bgyuyu(colorhuahua(0))} 555`
 </script>

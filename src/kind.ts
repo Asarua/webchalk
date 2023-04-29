@@ -28,4 +28,4 @@ export abstract class ChalkKind {
   }
 }
 
-export const internalColors = ['red', 'yellow', 'orange', 'green', 'cyan', 'blue', 'tomato', 'pink'] as const
+export const internalColors = ['red', 'yellow', 'orange', 'green', 'cyan', 'blue', 'tomato', 'pink', 'white', 'black'] as const
