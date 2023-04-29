@@ -8,6 +8,9 @@ type Chalk = {
   [P in typeof internalColors[number]]: AttrCallback
 } & {
   [P in `bg${Capitalize<typeof internalColors[number]>}`]: AttrCallback
+} & {
+  bg: (color: string) => AttrCallback
+  color: (color: string) => AttrCallback
 }
 
 const defaultChalk: Chalk = (() => {}) as any

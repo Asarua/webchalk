@@ -14,7 +14,9 @@
   },
   "scripts": {
     "build": "npx tsup src/index.ts --format esm,cjs --dts",
-    "publish": "npm run build && npm publish --access=public"
+    "publish": "npm run build && npm publish --access=public",
+    "changeset": "npx changeset",
+    "changeset-version": "npx changeset version"
   },
   "keywords": [
     "chalk",
