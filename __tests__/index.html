@@ -11,9 +11,6 @@
 </body>
 </html>
 <script type="module">
-  function chalk() {
-    console.log(arguments)
-  }
-
-  chalk`123${456}78${9}`
+  import { chalk } from '../dist/index.mjs'
+  chalk`123${chalk.red(chalk.bgGreen(456))}789`
 </script>

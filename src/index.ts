@@ -1,28 +1,81 @@
-import { ChalkKind, colors } from './kind'
+import { ChalkKind, internalColors, KIND } from './kind'
 
-interface Chalk {
-  (raws: unknown[], ...args: ChalkKind[]): void
+type AttrCallback = (info: unknown | ChalkKind) => ChalkKind
+
+type Chalk = {
+  (raws: TemplateStringsArray, ...args: ChalkKind[]): void
+} & {
+  [P in typeof internalColors[number]]: AttrCallback
+} & {
+  [P in `bg${Capitalize<typeof internalColors[number]>}`]: AttrCallback
 }
 
-const chalk: Chalk = (raws: unknown[], ...args: ChalkKind[]) => {
-  if (!raws?.length) {
-    return ''
-  }
-  const styleContainer: string[] = []
+const defaultChalk: Chalk = (() => {}) as any
+
+export const chalk = new Proxy(defaultChalk, {
+  apply(_target, _this, args: [TemplateStringsArray, ...ChalkKind[]]) {
+    const [raws, ...others] = args
+    if (!raws?.length) {
+      return ''
+    }
+    const resultContainer: string[] = []
+    const styleContainer: string[] = []
+    
+    const rawIterator = raws[Symbol.iterator]()
+    const argsIterator = others[Symbol.iterator]()
   
-  const rawIterator = raws[Symbol.iterator]()
-  const argsIterator = args[Symbol.iterator]()
-
-  let curResult: IteratorResult<unknown>
-  while (!(curResult = rawIterator.next()).done) {
-    const curArg = argsIterator.next()
-    if (curArg.done) {
-      break
+    let curResult: IteratorResult<string>
+    while (!(curResult = rawIterator.next()).done) {
+      pushContentAndStyle(curResult.value)
+      const curArg = argsIterator.next()
+      if (curArg.value instanceof ChalkKind) {
+        pushContentAndStyle(curArg.value)
+      }
     }
 
-    if (!(curArg.value instanceof ChalkKind)) {
-      styleContainer.push(curArg.value)
+    console.log(resultContainer.join(''), ...styleContainer)
+
+    function pushContentAndStyle(result: string): void
+    function pushContentAndStyle(result: ChalkKind): void
+    function pushContentAndStyle(result: any) {
+      if (typeof result === 'string') {
+        resultContainer.push(`%c${result}`)
+        styleContainer.push('all: unset;')
+      } else {
+        resultContainer.push(`%c${result.info}`)
+        styleContainer.push(result.styles.join(' '))
+      }
+    }
+  },
+  get(_, attr: string) {
+    const kind = checkAttrKind(attr)
+
+    return function(info: unknown) {
+      const CurKind = class extends ChalkKind {
+        constructor(...args: ConstructorParameters<typeof ChalkKind>) {
+          super(...args)
+        }
+      }
+
+      return new CurKind(kind, info, getOriginAttr(attr))
     }
   }
+})
+
+function checkAttrKind<T extends string>(attr: T) {
+  if (attr.startsWith('bg')) {
+    return KIND.BG_COLOR
+  } else {
+    return KIND.COLOR
+  }
 }
+
+function getOriginAttr(attr: string) {
+  if (attr.startsWith('bg')) {
+    return attr.charAt(2).toLowerCase() + attr.slice(3)
+  }
+
+  return attr
+}
+
 export default chalk
