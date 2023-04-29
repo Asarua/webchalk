@@ -49,15 +49,25 @@ export const chalk = new Proxy(defaultChalk, {
   },
   get(_, attr: string) {
     const kind = checkAttrKind(attr)
+    let initializeStyle = getOriginAttr(attr)
 
-    return function(info: unknown) {
+    if (attr === 'color' || attr === 'bg') {
+      return function(color: string) {
+        initializeStyle = color
+        return generateKind
+      }
+    }
+
+    return generateKind
+
+    function generateKind(info: unknown) {
       const CurKind = class extends ChalkKind {
         constructor(...args: ConstructorParameters<typeof ChalkKind>) {
           super(...args)
         }
       }
 
-      return new CurKind(kind, info, getOriginAttr(attr))
+      return new CurKind(kind, info, initializeStyle)
     }
   }
 })
