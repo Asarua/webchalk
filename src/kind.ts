@@ -1,3 +1,5 @@
+import internalColors from '../internalColors.json'
+
 export const enum KIND {
   COLOR = '__CHALK_KIND_COLOR__',
   BG_COLOR = '__CHALK_KIND_BG_COLOR__'
@@ -28,4 +30,6 @@ export abstract class ChalkKind {
   }
 }
 
-export const internalColors = ['red', 'yellow', 'orange', 'green', 'cyan', 'blue', 'tomato', 'pink', 'white', 'black'] as const
+export {
+  internalColors
+}
